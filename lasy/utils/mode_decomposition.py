@@ -120,7 +120,7 @@ def estimate_best_HG_waist(x, y, field):
     """
     dx = x[1] - x[0]
     dy = y[1] - y[0]
-    assert dx == dy
+    assert int(dx*1e8) == int(dy*1e8)
 
     X, Y = np.meshgrid(x, y)
 
