@@ -11,7 +11,7 @@ import numpy as np
 import math
 
 
-def hermite_gauss_decomposition(laserProfile, n_x_max=12, n_y_max=12, res=1e-6):
+def hermite_gauss_decomposition(laserProfile, n_x_max=12, n_y_max=12, res=1e-6, w0=None):
     """
     Decomposes a laser profile into a set of hermite-gaussian modes.
 
@@ -33,6 +33,10 @@ def hermite_gauss_decomposition(laserProfile, n_x_max=12, n_y_max=12, res=1e-6):
     res : float
         The resolution of grid points in x and y that will be used
         during the decomposition calculation
+    
+    w0 : float
+        If provided, this is used as the waist of the hermite gauss mode
+        in the decomposition. If not provided, it is estimated. 
 
     Returns
     -------
@@ -80,7 +84,8 @@ def hermite_gauss_decomposition(laserProfile, n_x_max=12, n_y_max=12, res=1e-6):
     field = laserProfile.evaluate(X, Y)
 
     # Get estimate of w0
-    w0 = estimate_best_HG_waist(x, y, field)
+    if w0 == None:
+        w0 = estimate_best_HG_waist(x, y, field)
 
     # Next we loop over the modes and calculate the relevant weights
     weights = {}
