@@ -1,15 +1,16 @@
+
 import numpy as np
 from axiprop.lib import PropagatorFFT2, PropagatorResampling
 from scipy.constants import c
 
-from lasy.utils.grid import Grid, time_axis_indx
+from lasy.utils.grid import Grid
 from lasy.utils.laser_utils import (
     normalize_energy,
     normalize_peak_field_amplitude,
     normalize_peak_intensity,
 )
 from lasy.utils.openpmd_output import write_to_openpmd_file
-
+time_axis_indx = -1
 
 class Laser:
     """
@@ -202,7 +203,9 @@ class Laser:
             )
         self.grid.set_spectral_field(spectral_field)
 
-    def propagate(self, distance, nr_boundary=None, backend="NP", show_progress=True):
+    def propagate(
+        self, distance, nr_boundary=None, grid=None, backend="NP", show_progress=True
+    ):
         """
         Propagate the laser pulse by the distance specified.
 
@@ -216,8 +219,12 @@ class Laser:
             will be attenuated (to assert proper Hankel transform).
             Only used for ``'rt'``.
 
+        grid : Grid object (optional)
+            Resample the field onto a new grid. Only works for ``'rt'``.
+
         backend : string (optional)
             Backend used by axiprop (see axiprop documentation).
+
         show_progress : bool (optional)
             Whether to show a progress bar when performing the computation
         """
@@ -239,7 +246,37 @@ class Laser:
 
         if self.dim == "rt":
             # Construct the propagator (check if exists)
-            if not hasattr(self, "prop"):
+            if grid is not None:
+                # Overwrite time information from current grid
+                grid.lo[time_axis_indx] = self.grid.lo[time_axis_indx]
+                grid.hi[time_axis_indx] = self.grid.hi[time_axis_indx]
+                grid.axes[time_axis_indx] = self.grid.axes[time_axis_indx]
+                # Extract the spectral field from the original grid
+                spectral_field = self.grid.get_spectral_field()
+                # Get current and resampled axis
+                spatial_axes = (self.grid.axes[0],)
+                spatial_axes_n = (grid.axes[0],)
+                # Overwrite grid
+                self.grid = grid
+                # Setting spectral field of the new grid to the original one
+                # since the new grid does not have its own associated field
+                # This will be needed in the propagation step below
+                self.grid.set_spectral_field(spectral_field)
+                self.prop = []  # Delete existing propagator
+                # Create Propagator and pass resampled axis
+                for m in self.grid.azimuthal_modes:
+                    self.prop.append(
+                        PropagatorResampling(
+                            *spatial_axes,
+                            self.omega_1d / c,
+                            *spatial_axes_n,
+                            mode=m,
+                            backend=backend,
+                            verbose=False,
+                        )
+                    )
+                # Construct the propagator for the case without resampling (check if exists)
+            else:
                 spatial_axes = (self.grid.axes[0],)
                 self.prop = []
                 for m in self.grid.azimuthal_modes:
@@ -254,6 +291,7 @@ class Laser:
                     )
             # Propagate the spectral image
             spectral_field = self.grid.get_spectral_field()
+
             for i_m in range(self.grid.azimuthal_modes.size):
                 transform_data = np.transpose(spectral_field[i_m]).copy()
                 self.prop[i_m].step(
@@ -264,6 +302,10 @@ class Laser:
                 )
                 spectral_field[i_m, :, :] = np.transpose(transform_data).copy()
             self.grid.set_spectral_field(spectral_field)
+            # Delete Propagator if resampling was done
+            if grid is not None:
+                del self.prop
+
         else:
             # Construct the propagator (check if exists)
             if not hasattr(self, "prop"):
