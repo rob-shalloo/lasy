@@ -9,6 +9,7 @@ from .transverse_profile import TransverseProfile
 class HermiteGaussianTransverseProfile(TransverseProfile):
     r"""
     A high-order Gaussian laser pulse expressed in the Hermite-Gaussian formalism.
+    
     Definition is according to Siegman "Lasers" pg. 646 eq. 60, as explicitly given
     in https://doi.org/10.1364/JOSAB.489884 eq. 3,  with the beam center upon the
     optical axis, :math:`x_0,y_0 = (0,0)`.
