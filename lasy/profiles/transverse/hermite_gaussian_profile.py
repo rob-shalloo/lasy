@@ -10,7 +10,7 @@ class HermiteGaussianTransverseProfile(TransverseProfile):
     r"""
     A high-order Gaussian laser pulse expressed in the Hermite-Gaussian formalism.
     Definition is according to Siegman "Lasers" pg. 646 eq. 60, as explicitly given
-    in https://doi.org/10.1364/JOSAB.489884 eq. 3,  with the beam center upon the 
+    in https://doi.org/10.1364/JOSAB.489884 eq. 3,  with the beam center upon the
     optical axis, :math:`x_0,y_0 = (0,0)`.
 
     More precisely, the transverse envelope (to be used in the
@@ -23,9 +23,9 @@ class HermiteGaussianTransverseProfile(TransverseProfile):
     with
 
     .. math::
-        \mathcal{H}_m(x) = A_m h_m \left ( \frac{\sqrt{2}x}{w_x(z)} \right) \exp{\left( -\frac{x^2}{w_x^2(z)}\right)} \exp{ \left ( -i k_0 \frac{x^2}{2 R_x(z)} \right )} 
+        \mathcal{H}_m(x) = A_m h_m \left ( \frac{\sqrt{2}x}{w_x(z)} \right) \exp{\left( -\frac{x^2}{w_x^2(z)}\right)} \exp{ \left ( -i k_0 \frac{x^2}{2 R_x(z)} \right )}
 
-        \mathcal{H}_n(y) = A_n h_n \left ( \frac{\sqrt{2}y}{w_y(z)} \right) \exp{\left( -\frac{y^2}{w_y^2(z)}\right)} \exp{ \left ( -i k_0 \frac{y^2}{2 R_y(z)} \right )} 
+        \mathcal{H}_n(y) = A_n h_n \left ( \frac{\sqrt{2}y}{w_y(z)} \right) \exp{\left( -\frac{y^2}{w_y^2(z)}\right)} \exp{ \left ( -i k_0 \frac{y^2}{2 R_y(z)} \right )}
 
         w_x(z) = w_{0,x} \sqrt{1 + \left( \frac{z}{Z_x}\right)^2}
 
@@ -45,24 +45,24 @@ class HermiteGaussianTransverseProfile(TransverseProfile):
 
         \Phi_y(z) = \left(n+\frac{1}{2}\right) \tan^{-1}\left({\frac{z}{Z_y}}\right)
 
-        \Z_x = \frac{\pi w_{0,x}^2}{\lambda_0} 
+        \Z_x = \frac{\pi w_{0,x}^2}{\lambda_0}
 
-        \Z_y = \frac{\pi w_{0,y}^2}{\lambda_0} 
+        \Z_y = \frac{\pi w_{0,y}^2}{\lambda_0}
 
 
     where  :math:`h_{n}` is the Hermite polynomial of order :math:`n`.
 
     The z-depedence shown in the above equations is required to correctly define the
-    electric field of the transverse profile relative to that of the pulse at the focus. 
+    electric field of the transverse profile relative to that of the pulse at the focus.
     The absolute z position will be overwritten when creating a laser object.
 
     Parameters
     ----------
     w_0x : float (in meter)
-        The waist of the laser pulse in the x direction, 
+        The waist of the laser pulse in the x direction,
         i.e. :math:`w_{0,x}` in the above formula.
     w_0y : float (in meter)
-        The waist of the laser pulse in the y direction, 
+        The waist of the laser pulse in the y direction,
         i.e. :math:`w_{0,y}` in the above formula.
     m : int (dimensionless)
         The order of hermite polynomial in the x direction
@@ -92,20 +92,22 @@ class HermiteGaussianTransverseProfile(TransverseProfile):
     --------
     >>> import matplotlib.pyplot as plt
     >>> import numpy as np
-    >>> from lasy.profiles.transverse.hermite_gaussian_profile import HermiteGaussianTransverseProfile
+    >>> from lasy.profiles.transverse.hermite_gaussian_profile import (
+    ...     HermiteGaussianTransverseProfile,
+    ... )
     >>> # Create evaluation grid
-    >>> xy = np.linspace(-30e-6,30e-6,200)
-    >>> X,Y = np.meshgrid(xy,xy)
+    >>> xy = np.linspace(-30e-6, 30e-6, 200)
+    >>> X, Y = np.meshgrid(xy, xy)
     >>> # Create an array of plots
-    >>> fig,ax = plt.subplots(3,6,figsize=(10,5),tight_layout=True)
-    >>> extent = (1e6*xy[0],1e6*xy[-1],1e6*xy[0],1e6*xy[-1])
+    >>> fig, ax = plt.subplots(3, 6, figsize=(10, 5), tight_layout=True)
+    >>> extent = (1e6 * xy[0], 1e6 * xy[-1], 1e6 * xy[0], 1e6 * xy[-1])
     >>> for m in range(3):
     >>>     for n in range(3):
     >>>         transverse_profile = HermiteGaussianTransverseProfile(
     ...             w_0x = 10e-6, # m
     ...             w_0y = 15e-6, # m
-    ...             m = m, # 
-    ...             n = n, # 
+    ...             m = m, #
+    ...             n = n, #
     ...             wavelength = 0.8e-6, # m
     ...         )
     ...         intensity = np.abs(transverse_profile.evaluate(X,Y))**2
@@ -116,7 +118,7 @@ class HermiteGaussianTransverseProfile(TransverseProfile):
     ...         vmax_phase = np.max(np.abs(phase))
     >>>         ax[m,n+3].imshow(phase,extent=extent,cmap='seismic',vmin=-vmax_phase,vmax=vmax_phase)
     >>>         ax[m,n+3].set_title('Phase: m,n = %i,%i' %(m,n))
-    >>>         if m==2: 
+    >>>         if m==2:
     >>>             ax[m,n].set_xlabel("x (µm)")
     >>>             ax[m,n+3].set_xlabel("x (µm)")
     >>>         else:
@@ -129,7 +131,7 @@ class HermiteGaussianTransverseProfile(TransverseProfile):
     >>>             ax[m,n].set_yticks([])
     >>>             ax[m,n+3].set_yticks([])
 
-    
+
 
     """
 
@@ -141,25 +143,25 @@ class HermiteGaussianTransverseProfile(TransverseProfile):
         self.n = n
         self.wavelength = wavelength
         self.z_foc = z_foc
-        z_eval = - z_foc # this links our observation pos. to Siegmann's definition
+        z_eval = -z_foc  # this links our observation pos. to Siegmann's definition
 
-        self.k0 = 2*np.pi/wavelength
-    
+        self.k0 = 2 * np.pi / wavelength
+
         # Calculate Rayleigh Lengths
-        Zx  = np.pi*w_0x**2/wavelength
-        Zy  = np.pi*w_0y**2/wavelength
-        
+        Zx = np.pi * w_0x**2 / wavelength
+        Zy = np.pi * w_0y**2 / wavelength
+
         # Calculate Size at Location Z
-        wxZ = w_0x*np.sqrt(1 + (z_eval/Zx)**2)
-        wyZ = w_0y*np.sqrt(1 + (z_eval/Zy)**2)
-        
+        wxZ = w_0x * np.sqrt(1 + (z_eval / Zx) ** 2)
+        wyZ = w_0y * np.sqrt(1 + (z_eval / Zy) ** 2)
+
         # Calculate Multiplicative Factors
-        Anx = 1 / np.sqrt( wxZ * 2**(m-1/2) * factorial(m) * np.sqrt(np.pi) )
-        Any = 1 / np.sqrt( wyZ * 2**(n-1/2) * factorial(n) * np.sqrt(np.pi) )
-        
+        Anx = 1 / np.sqrt(wxZ * 2 ** (m - 1 / 2) * factorial(m) * np.sqrt(np.pi))
+        Any = 1 / np.sqrt(wyZ * 2 ** (n - 1 / 2) * factorial(n) * np.sqrt(np.pi))
+
         # Calculate the Phase contributions from propagation
-        phiXz = (m + 1/2)*np.arctan2(z_eval,Zx)
-        phiYz = (n + 1/2)*np.arctan2(z_eval,Zy)
+        phiXz = (m + 1 / 2) * np.arctan2(z_eval, Zx)
+        phiYz = (n + 1 / 2) * np.arctan2(z_eval, Zy)
         phiZ = phiXz + phiYz
 
         self.z_eval = z_eval
@@ -170,7 +172,6 @@ class HermiteGaussianTransverseProfile(TransverseProfile):
         self.Anx = Anx
         self.Any = Any
         self.phiZ = phiZ
-        
 
     def _evaluate(self, x, y):
         """
@@ -199,14 +200,22 @@ class HermiteGaussianTransverseProfile(TransverseProfile):
         m = self.m
         n = self.n
         phiZ = self.phiZ
-        
+
         # Calculate the HG in each plane
-        HGnx = Anx * hermite(m)( np.sqrt(2) * (x)/wxZ ) * np.exp(-(x)**2/wxZ**2) * np.exp( -1j * k0 * (x)**2/2/(z_eval**2 + Zx**2)*z_eval)
-        HGny = Any * hermite(n)( np.sqrt(2) * (y)/wyZ ) * np.exp(-(y)**2/wyZ**2) * np.exp( -1j * k0 * (y)**2/2/(z_eval**2 + Zy**2)*z_eval)
-    
-        
+        HGnx = (
+            Anx
+            * hermite(m)(np.sqrt(2) * (x) / wxZ)
+            * np.exp(-((x) ** 2) / wxZ**2)
+            * np.exp(-1j * k0 * (x) ** 2 / 2 / (z_eval**2 + Zx**2) * z_eval)
+        )
+        HGny = (
+            Any
+            * hermite(n)(np.sqrt(2) * (y) / wyZ)
+            * np.exp(-((y) ** 2) / wyZ**2)
+            * np.exp(-1j * k0 * (y) ** 2 / 2 / (z_eval**2 + Zy**2) * z_eval)
+        )
+
         # Put it altogether
-        envelope = HGnx * HGny * np.exp(1j*phiZ)
-        
+        envelope = HGnx * HGny * np.exp(1j * phiZ)
 
         return envelope
