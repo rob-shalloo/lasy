@@ -42,16 +42,16 @@ profile = CombinedLongitudinalTransverseProfile(
 )
 
 # Calculate the decomposition into hermite-gauss modes
-n_x_max = 20
-n_y_max = 20
+m_max = 20
+n_max = 20
 modeCoeffs, waist = hermite_gauss_decomposition(
-    transverse_profile, n_x_max=n_x_max, n_y_max=n_y_max, res=0.5e-6
+    transverse_profile, wavelength, m_max=m_max, n_max=n_max, res=0.5e-6
 )
 
 # Reconstruct the pulse using a series of hermite-gauss modes
 for i, mode_key in enumerate(list(modeCoeffs)):
     tmp_transverse_profile = HermiteGaussianTransverseProfile(
-        waist, mode_key[0], mode_key[1]
+        waist, waist, mode_key[0], mode_key[1], wavelength
     )
     if i == 0:
         reconstructedProfile = modeCoeffs[
@@ -105,6 +105,6 @@ ax[2].set_ylabel("y (micron)")
 ax[2].set_title("Error")
 
 fig.suptitle(
-    "Hermite-Gauss Reconstruction using n_x_max = %i, n_y_max = %i" % (n_x_max, n_y_max)
+    "Hermite-Gauss Reconstruction using m_max = %i, n_max = %i" % (m_max, n_max)
 )
 plt.show()
