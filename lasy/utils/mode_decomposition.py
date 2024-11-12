@@ -95,7 +95,7 @@ def hermite_gauss_decomposition(laserProfile, m_max=12, n_max=12, res=1e-6):
     weights = {}
     for m in range(m_max):
         for n in range(n_max):
-            HGMode = HermiteGaussianTransverseProfile(w0,w0, m, n)
+            HGMode = HermiteGaussianTransverseProfile(w0, w0, m, n)
             coef = np.real(
                 np.sum(field * HGMode.evaluate(X, Y)) * dx * dy
             )  # modalDecomposition
@@ -146,7 +146,7 @@ def estimate_best_HG_waist(x, y, field):
 
     for i, wTest in enumerate(waistTest):
         # create a gaussian
-        HGMode = HermiteGaussianTransverseProfile(wTest,wTest, 0, 0)
+        HGMode = HermiteGaussianTransverseProfile(wTest, wTest, 0, 0)
         profile = HGMode.evaluate(X, Y)
         coeffTest[i] = np.real(np.sum(profile * field))
     w0 = waistTest[np.argmax(coeffTest)]
