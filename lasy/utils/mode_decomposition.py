@@ -12,7 +12,7 @@ from lasy.profiles.transverse.transverse_profile_from_data import (
 from lasy.utils.exp_data_utils import find_d4sigma
 
 
-def hermite_gauss_decomposition(laserProfile, n_x_max=12, n_y_max=12, res=1e-6):
+def hermite_gauss_decomposition(laserProfile, m_max=12, n_max=12, res=1e-6):
     """
     Decomposes a laser profile into a set of hermite-gaussian modes.
 
@@ -27,8 +27,8 @@ def hermite_gauss_decomposition(laserProfile, n_x_max=12, n_y_max=12, res=1e-6):
     laserProfile : class instance
         An instance of a class or sub-class of TransverseLaserProfile
 
-    n_x_max, n_y_max : ints
-        The maximum values of `n_x` and `n_y` out to which the expansion
+    m_max, n_max : ints
+        The maximum values of `m` and `n` out to which the expansion
         will be performed
 
     res : float
@@ -40,7 +40,7 @@ def hermite_gauss_decomposition(laserProfile, n_x_max=12, n_y_max=12, res=1e-6):
     weights : dict of floats
         A dictionary of floats corresponding to the weights of each mode
         in the decomposition. The keys of the dictionary are tuples
-        corresponding to (`n_x`,`n_y`)
+        corresponding to (`m`,`n`)
 
     waist : Beam waist for which the decomposition is calculated.
         It is computed as the waist for which the weight of order 0 is maximum.
@@ -93,15 +93,15 @@ def hermite_gauss_decomposition(laserProfile, n_x_max=12, n_y_max=12, res=1e-6):
 
     # Next we loop over the modes and calculate the relevant weights
     weights = {}
-    for i in range(n_x_max):
-        for j in range(n_y_max):
-            HGMode = HermiteGaussianTransverseProfile(w0, i, j)
+    for m in range(m_max):
+        for n in range(n_max):
+            HGMode = HermiteGaussianTransverseProfile(w0,w0, m, n)
             coef = np.real(
                 np.sum(field * HGMode.evaluate(X, Y)) * dx * dy
             )  # modalDecomposition
             if math.isnan(coef):
                 coef = 0
-            weights[(i, j)] = coef
+            weights[(m, n)] = coef
 
     return weights, w0
 
@@ -146,7 +146,7 @@ def estimate_best_HG_waist(x, y, field):
 
     for i, wTest in enumerate(waistTest):
         # create a gaussian
-        HGMode = HermiteGaussianTransverseProfile(wTest, 0, 0)
+        HGMode = HermiteGaussianTransverseProfile(wTest,wTest, 0, 0)
         profile = HGMode.evaluate(X, Y)
         coeffTest[i] = np.real(np.sum(profile * field))
     w0 = waistTest[np.argmax(coeffTest)]
