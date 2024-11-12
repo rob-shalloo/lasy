@@ -92,7 +92,7 @@ def hermite_gauss_decomposition(laserProfile, wavelength, m_max=12, n_max=12, re
     field = laserProfile.evaluate(X, Y)
 
     # Get estimate of w0
-    w0 = estimate_best_HG_waist(x, y, field)
+    w0 = estimate_best_HG_waist(x, y, field, wavelength)
 
     # Next we loop over the modes and calculate the relevant weights
     weights = {}
