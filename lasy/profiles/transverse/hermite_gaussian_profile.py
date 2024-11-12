@@ -136,7 +136,7 @@ class HermiteGaussianTransverseProfile(TransverseProfile):
 
     """
 
-    def __init__(self, w_0x, w_0y, m, n, wavelength=None, z_foc=0):
+    def __init__(self, w_0x, w_0y, m, n, wavelength, z_foc=0):
         super().__init__()
         self.w_0x = w_0x
         self.w_0y = w_0y
