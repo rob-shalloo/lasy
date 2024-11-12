@@ -123,11 +123,11 @@ def test_transverse_profiles_3d():
     n = 2
     std_th_x = np.sqrt(5.0 / 4) * w0_x
     std_th_y = np.sqrt(5.0 / 4) * w0_y
-    profile = HermiteGaussianTransverseProfile(w0_x,w0_y, m, n,wavelength=800e-9)
+    profile = HermiteGaussianTransverseProfile(w0_x, w0_y, m, n, wavelength=800e-9)
     x = np.linspace(-4 * w0_x, 4 * w0_x, npoints)
     y = np.linspace(-4 * w0_y, 4 * w0_y, npoints)
     field_x = profile.evaluate(x, np.zeros_like(y))
-    field_y = profile.evaluate(np.zeros_like(x),y)
+    field_y = profile.evaluate(np.zeros_like(x), y)
     std_x = np.sqrt(np.average(x**2, weights=np.abs(field_x) ** 2))
     std_y = np.sqrt(np.average(y**2, weights=np.abs(field_y) ** 2))
     print("std_th_x = ", std_th_x)
