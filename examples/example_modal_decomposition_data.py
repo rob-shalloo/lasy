@@ -123,11 +123,15 @@ ax2[0].plot(x*1e6, prof2[int(len(x)/2),:],label='Reconstructed Profile',color=(1
 ax2[0].plot(x*1e6, prof1[int(len(x)/2),:],label='Original Profile',color=(0.3,0.3,0.3),lw=1.0)
 ax2[0].legend()
 ax2[0].set_xlim(pltextent[0],pltextent[1])
+ax2[0].set_xlabel("x ($ \\mu m $)")
+ax2[0].set_ylabel("Intensity (norm.)")
 
 ax2[1].plot(x*1e6, prof2[int(len(x)/2),:],label='Reconstructed Profile',color=(1,0.5,0.5),lw=2.5)
 ax2[1].plot(x*1e6, prof1[int(len(x)/2),:],label='Original Profile',color=(0.3,0.3,0.3),lw=1.0)
 ax2[1].legend()
 ax2[1].set_xlim(pltextent[0],pltextent[1])
 ax2[1].set_yscale('log')
+ax2[1].set_xlabel("x ($ \\mu m $)")
+ax2[1].set_ylabel("Intensity (norm.)")
 
 plt.show()
