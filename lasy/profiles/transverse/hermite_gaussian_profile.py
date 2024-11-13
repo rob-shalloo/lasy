@@ -53,7 +53,7 @@ class HermiteGaussianTransverseProfile(TransverseProfile):
 
     where  :math:`h_{n}` is the Hermite polynomial of order :math:`n`.
 
-    The z-depedence shown in the above equations is required to correctly define the
+    The z-dependence shown in the above equations is required to correctly define the
     electric field of the transverse profile relative to that of the pulse at the focus.
     The absolute z position will be overwritten when creating a laser object.
 
@@ -67,7 +67,6 @@ class HermiteGaussianTransverseProfile(TransverseProfile):
         i.e. :math:`w_{0,y}` in the above formula.
     m : int (dimensionless)
         The order of hermite polynomial in the x direction
-        i.e. :math:`m` in the above formula
     n : int (dimensionless)
         The order of hermite polynomial in the y direction
         i.e. :math:`n` in the above formula

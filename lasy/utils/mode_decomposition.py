@@ -31,7 +31,7 @@ def hermite_gauss_decomposition(laserProfile, wavelength, m_max=12, n_max=12, re
         Central wavelength at which the Hermite-Gauss beams are to be defined.
 
     m_max, n_max : ints
-        The maximum values of `m` and `n` out to which the expansion
+        The maximum values of `m` and `n` up to which the expansion
         will be performed
 
     res : float
