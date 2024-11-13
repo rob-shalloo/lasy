@@ -12,7 +12,6 @@ from lasy.profiles.transverse.transverse_profile_from_data import (
     TransverseProfileFromData,
 )
 from lasy.utils.mode_decomposition import hermite_gauss_decomposition
-from scipy.constants import epsilon_0,c
 
 # Define the transverse profile of the laser pulse
 img_url = "https://user-images.githubusercontent.com/27694869/228038930-d6ab03b1-a726-4b41-a378-5f4a83dc3778.png"
@@ -119,15 +118,39 @@ ax[2].set_title("Error")
 plt.show()
 
 fig2, ax2 = plt.subplots(2, 1, figsize=(12, 8), tight_layout=True)
-ax2[0].plot(x*1e6, prof2[int(len(x)/2),:],label='Reconstructed Profile',color=(1,0.5,0.5),lw=2.5)
-ax2[0].plot(x*1e6, prof1[int(len(x)/2),:],label='Original Profile',color=(0.3,0.3,0.3),lw=1.0)
+ax2[0].plot(
+    x * 1e6,
+    prof2[int(len(x) / 2), :],
+    label="Reconstructed Profile",
+    color=(1, 0.5, 0.5),
+    lw=2.5,
+)
+ax2[0].plot(
+    x * 1e6,
+    prof1[int(len(x) / 2), :],
+    label="Original Profile",
+    color=(0.3, 0.3, 0.3),
+    lw=1.0,
+)
 ax2[0].legend()
 ax2[0].set_xlim(pltextent[0],pltextent[1])
 ax2[0].set_xlabel("x ($ \\mu m $)")
 ax2[0].set_ylabel("Intensity (norm.)")
 
-ax2[1].plot(x*1e6, prof2[int(len(x)/2),:],label='Reconstructed Profile',color=(1,0.5,0.5),lw=2.5)
-ax2[1].plot(x*1e6, prof1[int(len(x)/2),:],label='Original Profile',color=(0.3,0.3,0.3),lw=1.0)
+ax2[1].plot(
+    x * 1e6,
+    prof2[int(len(x) / 2), :],
+    label="Reconstructed Profile",
+    color=(1, 0.5, 0.5),
+    lw=2.5,
+)
+ax2[1].plot(
+    x * 1e6,
+    prof1[int(len(x) / 2), :],
+    label="Original Profile",
+    color=(0.3, 0.3, 0.3),
+    lw=1.0,
+)
 ax2[1].legend()
 ax2[1].set_xlim(pltextent[0],pltextent[1])
 ax2[1].set_yscale('log')
