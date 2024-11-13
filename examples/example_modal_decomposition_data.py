@@ -133,7 +133,7 @@ ax2[0].plot(
     lw=1.0,
 )
 ax2[0].legend()
-ax2[0].set_xlim(pltextent[0],pltextent[1])
+ax2[0].set_xlim(pltextent[0], pltextent[1])
 ax2[0].set_xlabel("x ($ \\mu m $)")
 ax2[0].set_ylabel("Intensity (norm.)")
 
@@ -152,8 +152,8 @@ ax2[1].plot(
     lw=1.0,
 )
 ax2[1].legend()
-ax2[1].set_xlim(pltextent[0],pltextent[1])
-ax2[1].set_yscale('log')
+ax2[1].set_xlim(pltextent[0], pltextent[1])
+ax2[1].set_yscale("log")
 ax2[1].set_xlabel("x ($ \\mu m $)")
 ax2[1].set_ylabel("Intensity (norm.)")
 
