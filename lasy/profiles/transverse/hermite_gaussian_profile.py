@@ -26,15 +26,19 @@ class HermiteGaussianTransverseProfile(TransverseProfile):
     .. math::
         \mathcal{H}_p(q) = A_p h_p \left ( \frac{\sqrt{2}q}{w_q(z)} \right) \exp{\left( -\frac{q^2}{w_q^2(z)}\right)} \exp{ \left ( -i k_0 \frac{q^2}{2 R_q(z)} \right )}
 
+        \Phi_q(z) = \left(p+\frac{1}{2}\right) \arctan\left({\frac{z}{Z_q}}\right)
+
         w_q(z) = w_{0,q} \sqrt{1 + \left( \frac{z}{Z_q}\right)^2}
+
+        Z_q = \frac{\pi w_{0,q}^2}{\lambda_0}
 
         A_p = \frac{1}{\sqrt{w_q(z) 2^{p-1/2} p!\sqrt{\pi}}}
 
         R_q(z) = z + \frac{Z_q^2}{z}
 
-        \Phi_q(z) = \left(p+\frac{1}{2}\right) \arctan\left({\frac{z}{Z_q}}\right)
+        
 
-        Z_q = \frac{\pi w_{0,q}^2}{\lambda_0}
+        
 
     where  :math:`h_{p}` is the Hermite polynomial of order :math:`p`.
 
