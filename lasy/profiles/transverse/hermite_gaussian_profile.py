@@ -36,13 +36,13 @@ class HermiteGaussianTransverseProfile(TransverseProfile):
 
         R_q(z) = z + \frac{Z_q^2}{z}
 
-        
 
-        
+
+
 
     where  :math:`h_{p}` is the Hermite polynomial of order :math:`p`, :math:`w_q(z)` is the
     spot size of the laser along the :math:`q` axis, :math:`Z_q` is the corresponding Ratyleigh
-    length and, :math:`\lambda_0` and :math:`k_0` are the wavelength and central wavenumber of the 
+    length and, :math:`\lambda_0` and :math:`k_0` are the wavelength and central wavenumber of the
     laser respectively.
 
 
