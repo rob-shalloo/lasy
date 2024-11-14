@@ -32,9 +32,7 @@ class HermiteGaussianTransverseProfile(TransverseProfile):
 
         w_y(z) = w_{0,y} \sqrt{1 + \left( \frac{z}{Z_y}\right)^2}
 
-        A_m = \frac{1}{\sqrt{w_x(z) 2^{(m-1/2)} m!\sqrt{\pi}}}
-
-        A_n = \frac{1}{\sqrt{w_y(z) 2^{(n-1/2)} n!\sqrt{\pi}}}
+        A_p = \frac{1}{\sqrt{w_q(z) 2^{p-1/2} p!\sqrt{\pi}}}
 
         R_x(z) = z + \frac{Z_x^2}{z}
 
@@ -46,9 +44,9 @@ class HermiteGaussianTransverseProfile(TransverseProfile):
 
         \Phi_y(z) = \left(n+\frac{1}{2}\right) \tan^{-1}\left({\frac{z}{Z_y}}\right)
 
-        \Z_x = \frac{\pi w_{0,x}^2}{\lambda_0}
+        Z_x = \frac{\pi w_{0,x}^2}{\lambda_0}
 
-        \Z_y = \frac{\pi w_{0,y}^2}{\lambda_0}
+        Z_y = \frac{\pi w_{0,y}^2}{\lambda_0}
 
 
     where  :math:`h_{n}` is the Hermite polynomial of order :math:`n`.
@@ -142,7 +140,7 @@ class HermiteGaussianTransverseProfile(TransverseProfile):
         self.n = n
         self.wavelength = wavelength
         self.z_foc = z_foc
-        z_eval = -z_foc  # this links our observation pos. to Siegmann's definition
+        z_eval = -z_foc  # this links our observation position to Siegmann's definition
 
         self.k0 = 2 * np.pi / wavelength
 
