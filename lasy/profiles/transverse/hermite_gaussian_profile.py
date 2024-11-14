@@ -41,7 +41,7 @@ class HermiteGaussianTransverseProfile(TransverseProfile):
 
 
     where  :math:`h_{p}` is the Hermite polynomial of order :math:`p`, :math:`w_q(z)` is the
-    spot size of the laser along the :math:`q` axis, :math:`Z_q` is the corresponding Ratyleigh
+    spot size of the laser along the :math:`q` axis (:math:`q` is :math:`x` or :math:`y`), :math:`Z_q` is the corresponding Rayleigh
     length and, :math:`\lambda_0` and :math:`k_0` are the wavelength and central wavenumber of the
     laser respectively.
 
