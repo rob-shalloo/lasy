@@ -144,7 +144,6 @@ class HermiteGaussianTransverseProfile(TransverseProfile):
         # Calculate the Phase contributions from propagation
         phiXz = (m + 1 / 2) * np.arctan2(z_eval, Zx)
         phiYz = (n + 1 / 2) * np.arctan2(z_eval, Zy)
-        phiZ = phiXz + phiYz
 
         self.z_eval = z_eval
         self.Zx = Zx
@@ -153,7 +152,8 @@ class HermiteGaussianTransverseProfile(TransverseProfile):
         self.wyZ = wyZ
         self.Anx = Anx
         self.Any = Any
-        self.phiZ = phiZ
+        self.phiXz = phiXz
+        self.phiYz = phiYz
 
     def _evaluate(self, x, y):
         """
@@ -181,7 +181,8 @@ class HermiteGaussianTransverseProfile(TransverseProfile):
         Any = self.Any
         m = self.m
         n = self.n
-        phiZ = self.phiZ
+        phiXz = self.phiXz
+        phiYz = self.phiYz
 
         # Calculate the HG in each plane
         HGnx = (
@@ -198,6 +199,6 @@ class HermiteGaussianTransverseProfile(TransverseProfile):
         )
 
         # Put it altogether
-        envelope = HGnx * HGny * np.exp(1j * phiZ)
+        envelope = HGnx * HGny * np.exp(1j * (phiXz + phiYz))
 
         return envelope
