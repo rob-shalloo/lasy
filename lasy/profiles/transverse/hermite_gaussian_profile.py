@@ -40,9 +40,9 @@ class HermiteGaussianTransverseProfile(TransverseProfile):
 
         \Phi(z) = \Phi_x(z) + \Phi_y(z)
 
-        \Phi_x(z) = \left(m+\frac{1}{2}\right) \tan^{-1}\left({\frac{z}{Z_x}}\right)
+        \Phi_x(z) = \left(m+\frac{1}{2}\right) \arctan\left({\frac{z}{Z_x}}\right)
 
-        \Phi_y(z) = \left(n+\frac{1}{2}\right) \tan^{-1}\left({\frac{z}{Z_y}}\right)
+        \Phi_y(z) = \left(n+\frac{1}{2}\right) \arctan\left({\frac{z}{Z_y}}\right)
 
         Z_x = \frac{\pi w_{0,x}^2}{\lambda_0}
 
