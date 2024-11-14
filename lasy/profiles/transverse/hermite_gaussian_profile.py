@@ -19,37 +19,24 @@ class HermiteGaussianTransverseProfile(TransverseProfile):
 
     .. math::
         \mathcal{T}(x, y) = \,
-                \mathcal{H}_m (x) \, \mathcal{H}_n(y) \, \exp(i \Phi)
+                \mathcal{H}_m (x) \, \mathcal{H}_n(y) \, \exp(i \left ( \Phi_x(z) + \Phi_y(z)\right ) )
 
     with
 
     .. math::
-        \mathcal{H}_m(x) = A_m h_m \left ( \frac{\sqrt{2}x}{w_x(z)} \right) \exp{\left( -\frac{x^2}{w_x^2(z)}\right)} \exp{ \left ( -i k_0 \frac{x^2}{2 R_x(z)} \right )}
+        \mathcal{H}_p(q) = A_p h_p \left ( \frac{\sqrt{2}q}{w_q(z)} \right) \exp{\left( -\frac{q^2}{w_q^2(z)}\right)} \exp{ \left ( -i k_0 \frac{q^2}{2 R_q(z)} \right )}
 
-        \mathcal{H}_n(y) = A_n h_n \left ( \frac{\sqrt{2}y}{w_y(z)} \right) \exp{\left( -\frac{y^2}{w_y^2(z)}\right)} \exp{ \left ( -i k_0 \frac{y^2}{2 R_y(z)} \right )}
-
-        w_x(z) = w_{0,x} \sqrt{1 + \left( \frac{z}{Z_x}\right)^2}
-
-        w_y(z) = w_{0,y} \sqrt{1 + \left( \frac{z}{Z_y}\right)^2}
+        w_q(z) = w_{0,q} \sqrt{1 + \left( \frac{z}{Z_q}\right)^2}
 
         A_p = \frac{1}{\sqrt{w_q(z) 2^{p-1/2} p!\sqrt{\pi}}}
 
-        R_x(z) = z + \frac{Z_x^2}{z}
+        R_q(z) = z + \frac{Z_q^2}{z}
 
-        R_y(z) = z + \frac{Z_y^2}{z}
+        \Phi_q(z) = \left(p+\frac{1}{2}\right) \arctan\left({\frac{z}{Z_q}}\right)
 
-        \Phi(z) = \Phi_x(z) + \Phi_y(z)
+        Z_q = \frac{\pi w_{0,q}^2}{\lambda_0}
 
-        \Phi_x(z) = \left(m+\frac{1}{2}\right) \arctan\left({\frac{z}{Z_x}}\right)
-
-        \Phi_y(z) = \left(n+\frac{1}{2}\right) \arctan\left({\frac{z}{Z_y}}\right)
-
-        Z_x = \frac{\pi w_{0,x}^2}{\lambda_0}
-
-        Z_y = \frac{\pi w_{0,y}^2}{\lambda_0}
-
-
-    where  :math:`h_{n}` is the Hermite polynomial of order :math:`n`.
+    where  :math:`h_{p}` is the Hermite polynomial of order :math:`p`.
 
     The z-dependence shown in the above equations is required to correctly define the
     electric field of the transverse profile relative to that of the pulse at the focus.
@@ -59,10 +46,8 @@ class HermiteGaussianTransverseProfile(TransverseProfile):
     ----------
     w_0x : float (in meter)
         The waist of the laser pulse in the x direction,
-        i.e. :math:`w_{0,x}` in the above formula.
     w_0y : float (in meter)
         The waist of the laser pulse in the y direction,
-        i.e. :math:`w_{0,y}` in the above formula.
     m : int (dimensionless)
         The order of hermite polynomial in the x direction
     n : int (dimensionless)
