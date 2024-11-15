@@ -2,6 +2,7 @@ import numpy as np
 from scipy.constants import c
 
 from .optical_element import OpticalElement
+import matplotlib.pyplot as plt
 
 class ThickOptic(OpticalElement):
     r"""
@@ -60,6 +61,8 @@ class ThickOptic(OpticalElement):
         assert np.all(material_length >=0)
 
         self.radius = radius
+        self.s1 = s1
+        self.s2 = s2
         self.vacuum_length = vacuum_length
         self.material_length = material_length
 
@@ -104,3 +107,36 @@ class ThickOptic(OpticalElement):
         
         
         return np.exp(-1j * (phase_shift_material + phase_shift_vacuum))
+    
+    def plot_optic(self,omega0):
+        """
+        Creates a plot of the surfaces of the optic for diagnostic purposes
+
+        omega0 : float (rad/s)
+            central frequency of beam.
+        """
+        radius = self.radius
+        s1 = self.s1
+        s2 = self.s2
+
+        amplitude_multiplier = self.amplitude_multiplier(radius,np.zeros_like(radius),0,omega0)
+        phase_shift = np.angle(amplitude_multiplier)
+
+        fig,ax =plt.subplots(1,2,tight_layout=True)
+
+        ax[0].plot(1e3*np.concatenate((s1[::-1],s1)),1e3*np.concatenate((-radius[::-1],radius)),color=(0,0,0))
+        ax[0].plot(1e3*np.concatenate((s2[::-1],s2)),1e3*np.concatenate((-radius[::-1],radius)),color=(0,0,0))
+        ax[0].hlines(-1e3*radius[-1],1e3*s1[-1],1e3*s2[-1],color=(0,0,0))
+        ax[0].hlines(1e3*radius[-1],1e3*s1[-1],1e3*s2[-1],color=(0,0,0))
+        ax[0].set_ylim(-1.1*1e3*np.max(radius),1.1*1e3*np.max(radius))
+        ax[0].set_xlim(1e3*np.min(s1)-1e3*np.max(s2/10),1.1*1e3*np.max(s2))
+
+        ax[0].fill_betweenx(1e3*np.concatenate((-radius[::-1],radius)),1e3*np.concatenate((s1[::-1],s1)),1e3*np.concatenate((s2[::-1],s2)),color=(0.5,0.5,1,.1))
+
+        ax[0].set_xlabel('Optical Axis (mm)')
+        ax[0].set_ylabel('Transverse Axis (mm)')
+
+        ax[1].set_title('Phase Shift Cross Section')
+        ax[1].plot(np.concatenate((phase_shift[::-1],phase_shift)),1e3*np.concatenate((-radius[::-1],radius)))
+        ax[1].set_xlabel('Phase Shift (rad)')
+        ax[1].set_ylabel('Transverse Axis (mm)')
