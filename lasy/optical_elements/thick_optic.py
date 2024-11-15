@@ -108,16 +108,18 @@ class ThickOptic(OpticalElement):
         
         return np.exp(-1j * (phase_shift_material + phase_shift_vacuum))
     
-    def plot_optic(self,omega0):
+    def plot_optic(self,omega0,Npoints=1000):
         """
         Creates a plot of the surfaces of the optic for diagnostic purposes
 
         omega0 : float (rad/s)
             central frequency of beam.
+        Npoints : int 
+            Number of points over which to plot the results
         """
-        radius = self.radius
-        s1 = self.s1
-        s2 = self.s2
+        radius =  np.linspace(self.radius[0],self.radius[-1],Npoints)
+        s1 = np.interp(radius,self.radius,self.s1)
+        s2 = np.interp(radius,self.radius,self.s2)
 
         amplitude_multiplier = self.amplitude_multiplier(radius,np.zeros_like(radius),0,omega0)
         phase_shift = np.angle(amplitude_multiplier)
@@ -140,3 +142,4 @@ class ThickOptic(OpticalElement):
         ax[1].plot(np.concatenate((phase_shift[::-1],phase_shift)),1e3*np.concatenate((-radius[::-1],radius)))
         ax[1].set_xlabel('Phase Shift (rad)')
         ax[1].set_ylabel('Transverse Axis (mm)')
+        ax[1].set_ylim(-1.1*1e3*np.max(radius),1.1*1e3*np.max(radius))
