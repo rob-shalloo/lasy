@@ -102,11 +102,11 @@ class ThickOptic(OpticalElement):
             eta_material_eval = eta_material
 
         # calculate the phase shifts
-        phase_shift_material = (omega+omega0) * eta_material_eval * np.interp(r,radius,material_length) / c
-        phase_shift_vacuum   = (omega+omega0) *     eta_vacuum    * np.interp(r,radius,vacuum_length) / c
+        phase_shift_material = (omega+omega0) / c * eta_material_eval * np.interp(r,radius,material_length) 
+        phase_shift_vacuum   = (omega+omega0) / c *     eta_vacuum    * np.interp(r,radius,vacuum_length) 
         
         
-        return np.exp(-1j * (phase_shift_material + phase_shift_vacuum))
+        return np.exp(1j * (phase_shift_material + phase_shift_vacuum))
     
     def plot_optic(self,omega0,Npoints=1000):
         """
@@ -143,3 +143,5 @@ class ThickOptic(OpticalElement):
         ax[1].set_xlabel('Phase Shift (rad)')
         ax[1].set_ylabel('Transverse Axis (mm)')
         ax[1].set_ylim(-1.1*1e3*np.max(radius),1.1*1e3*np.max(radius))
+
+        print("Peak to Valley Phase Shift = %.2f pi radians" %((np.max(phase_shift)-np.min(phase_shift))/2/np.pi ))
