@@ -122,10 +122,11 @@ class ThickOptic(OpticalElement):
         s2 = np.interp(radius,self.radius,self.s2)
 
         amplitude_multiplier = self.amplitude_multiplier(radius,np.zeros_like(radius),0,omega0)
-        phase_shift = np.angle(amplitude_multiplier)
+        phase_shift = np.unwrap(np.angle(amplitude_multiplier))
 
-        fig,ax =plt.subplots(1,2,tight_layout=True)
+        fig,ax =plt.subplots(1,3,tight_layout=True)
 
+        ax[0].set_title('Optic Cross Section')
         ax[0].plot(1e3*np.concatenate((s1[::-1],s1)),1e3*np.concatenate((-radius[::-1],radius)),color=(0,0,0))
         ax[0].plot(1e3*np.concatenate((s2[::-1],s2)),1e3*np.concatenate((-radius[::-1],radius)),color=(0,0,0))
         ax[0].hlines(-1e3*radius[-1],1e3*s1[-1],1e3*s2[-1],color=(0,0,0))
@@ -138,10 +139,19 @@ class ThickOptic(OpticalElement):
         ax[0].set_xlabel('Optical Axis (mm)')
         ax[0].set_ylabel('Transverse Axis (mm)')
 
-        ax[1].set_title('Phase Shift Cross Section')
-        ax[1].plot(np.concatenate((phase_shift[::-1],phase_shift)),1e3*np.concatenate((-radius[::-1],radius)))
-        ax[1].set_xlabel('Phase Shift (rad)')
+        ax[1].set_title('Optical Surfaces')
+        ax[1].plot(1e6*np.concatenate((s1[::-1],s1))-np.mean(s1)*1e6,1e3*np.concatenate((-radius[::-1],radius)),label='s1')
+        ax[1].plot(1e6*np.concatenate((s2[::-1],s2))-np.mean(s2)*1e6,1e3*np.concatenate((-radius[::-1],radius)),label='s2')
+        ax[1].legend()
+        ax[1].set_xlabel(r'Optical Axis ($\mu m$)')
         ax[1].set_ylabel('Transverse Axis (mm)')
-        ax[1].set_ylim(-1.1*1e3*np.max(radius),1.1*1e3*np.max(radius))
 
-        print("Peak to Valley Phase Shift = %.2f pi radians" %((np.max(phase_shift)-np.min(phase_shift))/2/np.pi ))
+        ax[2].set_title('Phase Shift Cross Section')
+        ax[2].plot(np.concatenate((phase_shift[::-1],phase_shift)),1e3*np.concatenate((-radius[::-1],radius)))
+        ax[2].set_xlabel('Phase Shift (rad)')
+        ax[2].set_ylabel('Transverse Axis (mm)')
+        ax[2].set_ylim(-1.1*1e3*np.max(radius),1.1*1e3*np.max(radius))
+
+        print("Peak to Valley Phase Shift = %.2f radians" %((np.max(phase_shift)-np.min(phase_shift)) ))
+        print("Peak to Valley Phase Shift = %.2f microns" %((np.max(phase_shift)-np.min(phase_shift))*1e6 / (omega0/c)))
+
