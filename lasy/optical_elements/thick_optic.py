@@ -97,13 +97,13 @@ class ThickOptic(OpticalElement):
         r = np.sqrt(x**2 + y**2)
 
         if callable(eta_material):
-            eta_material_eval = eta_material(omega+omega0)
+            eta_material_eval = eta_material(omega)
         else:
             eta_material_eval = eta_material
 
         # calculate the phase shifts
-        phase_shift_material = (omega+omega0) / c * eta_material_eval * np.interp(r,radius,material_length) 
-        phase_shift_vacuum   = (omega+omega0) / c *     eta_vacuum    * np.interp(r,radius,vacuum_length) 
+        phase_shift_material = omega / c * eta_material_eval * np.interp(r,radius,material_length) 
+        phase_shift_vacuum   = omega / c *     eta_vacuum    * np.interp(r,radius,vacuum_length) 
         
         
         return np.exp(1j * (phase_shift_material + phase_shift_vacuum))
