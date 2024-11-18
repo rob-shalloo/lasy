@@ -42,7 +42,6 @@ class PolynomialSpectralPhase(OpticalElement):
         self.gdd = gdd
         self.tod = tod
         self.fod = fod
-        
 
     def amplitude_multiplier(self, x, y, omega):
         """
@@ -53,7 +52,7 @@ class PolynomialSpectralPhase(OpticalElement):
         x, y, omega : ndarrays of floats
             Define points on which to evaluate the multiplier.
             These arrays need to all have the same shape.
-        
+
 
         Returns
         -------
