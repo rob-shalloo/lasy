@@ -1,7 +1,6 @@
 axiprop>=0.5.3
+matplotlib
 numpy
 openpmd-api
 openpmd-viewer
 scipy
-matplotlib
-
