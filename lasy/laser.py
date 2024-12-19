@@ -429,11 +429,11 @@ class Laser:
             spatial_unit = r"($\mu m$)"
 
         # Calculate temporal scales for the axes
-        if self.grid.hi[-1] > 1e-9:
+        if self.grid.hi[-1]-self.grid.lo[-1] > 1e-9:
             # scale is nanoseconds
             temporal_scale = 1e-9
             temporal_unit = r"(ns)"
-        elif self.grid.hi[-1] > 1e-12:
+        elif self.grid.hi[-1]-self.grid.lo[-1] > 1e-12:
             # scale is picoseconds
             temporal_scale = 1e-12
             temporal_unit = r"(ps)"
@@ -501,7 +501,7 @@ class Laser:
             ax.text(
                 0.55,
                 0.95,
-                r"Pulse Duration   = %.2f " % (tau) + temporal_unit[1:-1],
+                r"Pulse Duration   = %.1f " % (tau) + temporal_unit[1:-1],
                 transform=ax.transAxes,
             )
 
@@ -510,6 +510,6 @@ class Laser:
             ax.text(
                 0.55,
                 0.9,
-                r"Spot Size           = %.2f " % (w0) + spatial_unit[1:-1],
+                r"Spot Size           = %.1f " % (w0) + spatial_unit[1:-1],
                 transform=ax.transAxes,
             )
