@@ -495,8 +495,8 @@ class Laser:
             
             # Get the pulse duration
             tau = 2 * get_duration(self.grid, self.dim) /temporal_scale
-            ax.text(0.75,0.9,r'$\tau$   = %.2f '%(tau)  +temporal_unit[1:-1] ,transform=ax.transAxes)
+            ax.text(0.55,0.95,r'Pulse Duration   = %.2f '%(tau)  +temporal_unit[1:-1] ,transform=ax.transAxes)
 
             # Get the spot size
             w0 = get_w0(self.grid, self.dim) / spatial_scale
-            ax.text(0.75,0.85,r'$w_0$ = %.2f '%(w0)  +spatial_unit[1:-1] ,transform=ax.transAxes)
+            ax.text(0.55,0.9,r'Spot Size           = %.2f '%(w0)  +spatial_unit[1:-1] ,transform=ax.transAxes)
