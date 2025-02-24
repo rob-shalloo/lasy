@@ -1,5 +1,6 @@
 import numpy as np
 from axiprop.lib import PropagatorFFT2, PropagatorResampling
+from lasy.utils.propagation_tools import propagateCZT
 from scipy.constants import c
 
 from lasy.utils.grid import Grid, time_axis_indx
@@ -318,25 +319,42 @@ class Laser:
                 # Delete Propagator if resampling and propagation was done
                 del self.prop
 
-        else:
-            # Construct the propagator (check if exists)
-            if not hasattr(self, "prop"):
-                Nx, Ny, Nt = self.grid.shape
-                Lx = self.grid.hi[0] - self.grid.lo[0]
-                Ly = self.grid.hi[1] - self.grid.lo[1]
-                spatial_axes = ((Lx, Nx), (Ly, Ny))
-                self.prop = PropagatorFFT2(
-                    *spatial_axes,
-                    self.omega_1d / c,
-                    backend=backend,
-                    verbose=False,
+        elif self.dim =='xyt':
+            # Resampling onto new grid
+            if grid is not None:
+                x = self.grid.axes[0]
+                y = self.grid.axes[1]
+
+                xF = grid.axes[0]
+                yF = grid.axes[1]
+
+                assert len(x) == len(xF)
+                assert len(y) == len(yF)
+
+                _,_,nW = spectral_field.shape
+
+                for i in range(nW):
+                    _,_,spectral_field[:,:,i] = propagateCZT(x,y,spectral_field[:,:,i],2*np.pi*c/self.omega_1d[i],distance,(xF[0],xF[-1]),(yF[0],yF[-1]))
+
+            else:
+                # Construct the propagator (check if exists)
+                if not hasattr(self, "prop"):
+                    Nx, Ny, Nt = self.grid.shape
+                    Lx = self.grid.hi[0] - self.grid.lo[0]
+                    Ly = self.grid.hi[1] - self.grid.lo[1]
+                    spatial_axes = ((Lx, Nx), (Ly, Ny))
+                    self.prop = PropagatorFFT2(
+                        *spatial_axes,
+                        self.omega_1d / c,
+                        backend=backend,
+                        verbose=False,
+                    )
+                # Propagate the spectral image
+                transform_data = np.moveaxis(spectral_field, -1, 0).copy()
+                self.prop.step(
+                    transform_data, distance, overwrite=True, show_progress=show_progress
                 )
-            # Propagate the spectral image
-            transform_data = np.moveaxis(spectral_field, -1, 0).copy()
-            self.prop.step(
-                transform_data, distance, overwrite=True, show_progress=show_progress
-            )
-            spectral_field = np.moveaxis(transform_data, 0, -1).copy()
+                spectral_field = np.moveaxis(transform_data, 0, -1).copy()
 
         # Choose the time translation assuming propagation at v=c
         translate_time = distance / c
