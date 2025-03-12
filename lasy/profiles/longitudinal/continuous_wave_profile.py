@@ -35,4 +35,4 @@ class ContinuousWaveProfile(LongitudinalProfile):
             specified points. This array has the same shape as the array t.
         """
         
-        return np.ones_like(t)
+        return np.ones_like(t+0*1j)
